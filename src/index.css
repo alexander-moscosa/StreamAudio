@@ -1,0 +1,389 @@
+@font-face {
+  font-family: "Poppins";
+  src: url(./fonts/Poppins-Regular.ttf);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  list-style: none;
+}
+
+*::selection {
+  background-color: rgb(143, 68, 255);
+}
+
+/* Scroll */
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #150035;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3e0199;
+}
+
+/* Home Styles */
+
+.homeContent {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 69%,
+    rgba(47, 0, 116, 1) 100%
+  );
+  width: 100%;
+  height: 100vh;
+}
+
+.homeNav {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeNav nav {
+  width: 100%;
+}
+
+.homeNav nav ul li {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 5%;
+}
+
+.homeNav nav ul li a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 10px;
+  background-color: rgb(169, 112, 255);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.homeNav nav ul li a:hover {
+  cursor: pointer;
+  background-color: rgb(143, 68, 255);
+}
+
+.homeNav nav ul li a svg {
+  padding-left: 6%;
+}
+
+.homeMain {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 70%;
+  margin-top: 2%;
+}
+
+.homeMainTitle {
+  margin: 5% 0% 3%;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.homeMainTitle h1 {
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.homeMainTitle p {
+  text-align: center;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.homeMainDesc {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.homeMainDesc p {
+  margin-top: 1%;
+  color: #ccc;
+  font-size: 16px;
+  text-align: center;
+}
+
+.homeMainDesc a {
+  color: rgb(169, 112, 255);
+}
+
+.homeSendVoiceNoteButton {
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.homeSendVoiceNoteButton a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  padding: 10px;
+  background-color: rgb(169, 112, 255);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.homeSendVoiceNoteButton a:hover {
+  cursor: pointer;
+  background-color: rgb(143, 68, 255);
+}
+
+.homeFooter {
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #1c1d1f;
+}
+
+.homeFooterTitle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2% 0%;
+}
+
+.homeFooterTitle h2 {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.homeFooterCopy {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin: 0% 0% 2% 0%;
+}
+
+.homeFooterCopy svg {
+  padding-right: 5px;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.homeFooterCopy p {
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* Login Styles */
+
+.loginContent {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 69%,
+    rgba(47, 0, 116, 1) 100%
+  );
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loginCard {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 25%;
+  height: 50%;
+  background-color: #1c1d1f;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.loginTwitch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 15%;
+  margin-top: 5%;
+}
+
+.twitchButton {
+  background-color: #9047FF;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.loginDesc {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 75%;
+  overflow: hidden;
+}
+
+.loginTitle {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2% 0%;
+}
+
+.loginTitle h1 {
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin: 3% 0%;
+}
+
+.loginBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 85%;
+}
+
+.loginBody p {
+  font-size: 12px;
+}
+
+.loginBody ul li {
+  list-style: square;
+}
+
+.loginBody ul li b {
+  font-size: 13px;
+  color: #9047FF;
+}
+
+
+
+@media only screen and (max-width: 1500px) {
+  .homeNav nav ul li a {
+    width: 15%;
+  }
+
+  .homeSendVoiceNoteButton a {
+    width: 15%;
+  }
+
+  .loginCard {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .homeNav nav ul li a {
+    width: 20%;
+  }
+
+  .homeSendVoiceNoteButton a {
+    width: 20%;
+  }
+
+  .loginCard {
+    width: 55%;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .homeNav nav ul li a {
+    margin-top: 5%;
+    font-size: 13px;
+    width: 25%;
+    background-color: rgb(143, 68, 255);
+  }
+
+  .homeSendVoiceNoteButton a {
+    margin-top: 5%;
+    width: 25%;
+    background-color: rgb(143, 68, 255);
+    font-size: 13px;
+  }
+
+  .homeMainDesc {
+    width: 90%;
+  }
+
+  .homeMainTitle h1 {
+    font-size: 23px;
+  }
+
+  .homeMainTitle p {
+    font-size: 12px;
+  }
+
+  .homeMainDesc {
+    margin-top: 5%;
+  }
+
+  .homeMainDesc p {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .homeMainDesc a {
+    margin-top: 3%;
+    font-size: 14px;
+  }
+
+  .loginCard {
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .homeNav nav ul li a {
+    width: 35%;
+  }
+
+  .homeSendVoiceNoteButton a {
+    width: 35%;
+  }
+
+  .loginCard {
+    width: 85%;
+  }
+}
