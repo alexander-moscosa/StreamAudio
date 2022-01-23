@@ -229,7 +229,7 @@
   align-items: center;
   flex-direction: column;
   width: 25%;
-  height: 50%;
+  min-height: 50%;
   background-color: #1c1d1f;
   border-radius: 10px;
   padding: 20px;
@@ -385,5 +385,43 @@
 
   .loginCard {
     width: 85%;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .homeNav nav ul li a {
+    width: 35%;
+  }
+
+  .homeSendVoiceNoteButton a {
+    width: 35%;
+  }
+
+  .loginCard {
+    width: 85%;
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+  .twitchButton a {
+    font-size: 12px;
+  }
+
+  .twitchButton {
+    padding: 10px;
+  }
+
+  .loginTitle h1 {
+    margin: 5% 0%;
+    font-size: 12px;
+  }
+
+  .loginBody p {
+    font-size: 10px;
+  }
+
+  .loginBody ul li b  {
+    font-size: 11px;
   }
 }
