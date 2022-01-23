@@ -4,3 +4,8 @@ export interface GetUserProps {
     Authorization: string;
   };
 }
+
+export interface twitchUserState {
+  ok: boolean;
+  data: any
+}
