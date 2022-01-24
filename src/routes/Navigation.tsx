@@ -1,17 +1,23 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "../modules/home/pages/Home";
-import { Logging_in } from "../modules/logging-in/pages/Logging-in";
-import { Login } from "../modules/login/pages/Login";
+import { Loading } from '../modules/loading/pages/Loading';
+
+const LazyLoggingIn = lazy( () => import(/* webpackChunkName: "LazyLoggingIn" */"../modules/logging-in/pages/Logging_in"));
+const LazyLogin = lazy( () => import(/* webpackChunkName: "LazyLogin" */"../modules/login/pages/Login"));
+const LazyHome = lazy( () => import(/* webpackChunkName: "LazyHome" */"../modules/home/pages/Home"));
+
 
 export const Navigation = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="logging-in" element={<Logging_in />} />
-        <Route path="/*" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <Suspense fallback={ <Loading /> }> 
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LazyHome />} />
+          <Route path="login" element={<LazyLogin />} />
+          <Route path="logging-in" element={<LazyLoggingIn /> } />
+          <Route path="*" element={<LazyHome />} />
+        </Routes>
+      </BrowserRouter>
+    </Suspense>
   );
 };
