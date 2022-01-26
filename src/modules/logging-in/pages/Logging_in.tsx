@@ -1,8 +1,8 @@
-import { GetUserProps, twitchUserState } from '../interfaces/interfaces';
-import { useEffect, useReducer } from 'react';
-import axios from 'axios';
-import { NavLink } from 'react-router-dom';
-import { EmailButton } from '../componets/EmailButton';
+import { GetUserProps, twitchUserState } from "../interfaces/interfaces";
+import { useEffect, useReducer, useState } from "react";
+import axios from "axios";
+import { NavLink } from "react-router-dom";
+import { EmailButton } from "../componets/EmailButton";
 
 const initial_state: twitchUserState = {
   ok: false,
@@ -30,22 +30,57 @@ const reducer = (state: twitchUserState, action: twitchUserState) => {
 export const Logging_in = () => {
   const [twitchUserState, twitchUserDispatch] = useReducer(
     reducer,
-    initial_state,
+    initial_state
   );
 
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  // TODO: Cuando haga click, hacer la petición de login o register
+  const button_logging_in = document.getElementById("button_logging_in");
+
+  button_logging_in?.addEventListener("click", (e) => {
+    const data = {
+      username: twitchUserState.data?.login,
+      email: twitchUserState.data?.email,
+      twitch_id: twitchUserState.data?.id,
+    };
+
+    try {
+      console.log("entre");
+
+      isRegistered
+        ? axios
+            .post(`http://localhost:9090/api/v1/user/login`, data)
+            .then(({ data }) => {
+              console.log(data);
+            })
+        : axios
+            .post(`http://localhost:9090/api/v1/user/register`, data)
+            .then(({ data }) => {
+              console.log(isRegistered);
+
+              console.log(data);
+            });
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+      }
+    }
+  });
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.hash.replace('#', '?'));
-    const token = params.get('access_token');
+    const params = new URLSearchParams(window.location.hash.replace("#", "?"));
+    const token = params.get("access_token");
 
     const config: GetUserProps = {
       headers: {
-        Authorization: `Bearer ${token}` || '',
-        'Client-Id': 'b5g4ef9i6y2pkk7hx6591ggva34hqr',
+        Authorization: `Bearer ${token}` || "",
+        "Client-Id": "b5g4ef9i6y2pkk7hx6591ggva34hqr",
       },
     };
     try {
       axios
-        .get('https://api.twitch.tv/helix/users', config)
+        .get("https://api.twitch.tv/helix/users", config)
         .then(({ data }) => {
           twitchUserDispatch({ ok: true, data: data.data[0] });
         });
@@ -59,6 +94,23 @@ export const Logging_in = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    // TODO: Verificar que el usuario existe en la base de datos, pd. Se repite dos veces o una chingadera así
+    try {
+      axios
+        .get(`http://localhost:9090/api/v1/user/${twitchUserState.data?.login}`)
+        .then(({ data }) => {
+          console.log(data);
+          setIsRegistered(true);
+        });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(JSON.stringify(err));
+        setIsRegistered(false);
+      }
+    }
+  }, [twitchUserState]);
 
   return (
     <div className="logging_in_content">
@@ -98,9 +150,11 @@ export const Logging_in = () => {
               <div className="loginTwitch">
                 <NavLink
                   className="twitchButton logging_in_twitch_button"
-                  to="/logreg"
+                  to="/dashboard"
+                  id="button_logging_in"
                 >
-                  Iniciar sesión como {twitchUserState.data.login}
+                  {isRegistered ? "Iniciar sesión" : "Registrarse"} como{" "}
+                  {twitchUserState.data.login}
                 </NavLink>
               </div>
             </div>
