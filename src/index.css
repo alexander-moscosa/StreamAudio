@@ -249,6 +249,9 @@
   background-color: #9047FF;
   padding: 15px;
   border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  border: none;
 }
 
 .loginDesc {

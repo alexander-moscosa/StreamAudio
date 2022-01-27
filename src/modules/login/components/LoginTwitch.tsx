@@ -10,16 +10,19 @@ export const LoginTwitch = ({
       ' ',
     )}`;
 
-    sessionStorage.setItem('meta', JSON.stringify({
-      loggingIn: true,
-    }));
+    sessionStorage.setItem(
+      'meta',
+      JSON.stringify({
+        loggingIn: true,
+      }),
+    );
   };
 
   return (
     <div className="loginTwitch">
-      <div className="twitchButton">
-        <button onClick={handleButtonClick}>Iniciar Sesión con Twitch</button>
-      </div>
+      <button onClick={handleButtonClick} className="twitchButton">
+        Iniciar Sesión con Twitch
+      </button>
     </div>
   );
 };
