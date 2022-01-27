@@ -1,8 +1,13 @@
-import { GetUserProps, twitchUserState } from "../interfaces/interfaces";
-import { useEffect, useReducer, useState } from "react";
-import axios from "axios";
-import { NavLink } from "react-router-dom";
-import { EmailButton } from "../componets/EmailButton";
+import { GetUserProps, twitchUserState } from '../interfaces/interfaces';
+import { useEffect, useReducer, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { EmailButton } from '../componets/EmailButton';
+import { userExist } from '../helpers/userExist';
+import {
+  StateActions,
+  useSteamAudioContext,
+} from '../../../context/SteamAudioContext';
 
 const initial_state: twitchUserState = {
   ok: false,
@@ -30,86 +35,111 @@ const reducer = (state: twitchUserState, action: twitchUserState) => {
 export const Logging_in = () => {
   const [twitchUserState, twitchUserDispatch] = useReducer(
     reducer,
-    initial_state
+    initial_state,
   );
+
+  const navigate = useNavigate();
+
+  const { dispatch, isLoggingIn } = useSteamAudioContext();
 
   const [isRegistered, setIsRegistered] = useState(false);
 
-  // TODO: Cuando haga click, hacer la petición de login o register
-  const button_logging_in = document.getElementById("button_logging_in");
-
-  button_logging_in?.addEventListener("click", (e) => {
+  const handleButtonClick = async () => {
     const data = {
       username: twitchUserState.data?.login,
       email: twitchUserState.data?.email,
       twitch_id: twitchUserState.data?.id,
     };
 
-    try {
-      console.log("entre");
+    const type = isRegistered ? 'login' : 'register';
 
-      isRegistered
-        ? axios
-            .post(`http://localhost:9090/api/v1/user/login`, data)
-            .then(({ data }) => {
-              console.log(data);
-            })
-        : axios
-            .post(`http://localhost:9090/api/v1/user/register`, data)
-            .then(({ data }) => {
-              console.log(isRegistered);
-
-              console.log(data);
-            });
-    } catch (err: any) {
-      if (axios.isAxiosError(err)) {
-        console.log(err);
-      }
-    }
-  });
+    axios
+      .post(`http://localhost:9090/api/v1/user/${type}`, data)
+      .then((data) => {
+        dispatch({
+          type: StateActions.SET_DATA,
+          payload: {
+            value: {
+              ...twitchUserState.data,
+              extra: data.data.user._id,
+            },
+          },
+        });
+        dispatch({
+          type: StateActions.LOGGED_IN,
+          payload: { value: true },
+        });
+        navigate('/dashboard', { replace: true });
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          console.log(error.response);
+        }
+      });
+  };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.hash.replace("#", "?"));
-    const token = params.get("access_token");
+    // Verificar se está loggeando
+    if (!isLoggingIn) {
+      navigate('/', { replace: true });
+      return;
+    }
 
-    const config: GetUserProps = {
-      headers: {
-        Authorization: `Bearer ${token}` || "",
-        "Client-Id": "b5g4ef9i6y2pkk7hx6591ggva34hqr",
-      },
-    };
-    try {
+    // Loggearse con Twitch
+    const sendRequest = () => {
+      const params = new URLSearchParams(
+        window.location.hash.replace('#', '?'),
+      );
+      const token = params.get('access_token');
+
+      const config: GetUserProps = {
+        headers: {
+          Authorization: `Bearer ${token}` || '',
+          'Client-Id': 'b5g4ef9i6y2pkk7hx6591ggva34hqr',
+        },
+      };
+
       axios
-        .get("https://api.twitch.tv/helix/users", config)
+        .get('https://api.twitch.tv/helix/users', config)
         .then(({ data }) => {
           twitchUserDispatch({ ok: true, data: data.data[0] });
+        })
+        .catch((err) => {
+          if (axios.isAxiosError(err)) {
+            twitchUserDispatch({
+              ok: false,
+              errorMessage: err.message,
+              data: null,
+            });
+          }
         });
-    } catch (err: any) {
-      if (axios.isAxiosError(err)) {
-        twitchUserDispatch({
-          ok: false,
-          errorMessage: err.message,
-          data: null,
-        });
-      }
-    }
-  }, []);
+    };
+
+    sendRequest();
+
+    return () => {
+      twitchUserDispatch({ ok: false, data: null });
+    };
+  }, [navigate, isLoggingIn]);
 
   useEffect(() => {
-    // TODO: Verificar que el usuario existe en la base de datos, pd. Se repite dos veces o una chingadera así
-    try {
-      axios
-        .get(`http://localhost:9090/api/v1/user/${twitchUserState.data?.login}`)
-        .then(({ data }) => {
-          console.log(data);
-          setIsRegistered(true);
-        });
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(JSON.stringify(err));
-        setIsRegistered(false);
+    const verifyUser = () => {
+      // Verificar si el usuario está registrado
+
+      const userData = twitchUserState.data;
+
+      if (userData) {
+        userExist(userData.login)
+          .then((data) => {
+            setIsRegistered(data.exist);
+          })
+          .catch((error) => {
+            setIsRegistered(error.exist);
+          });
       }
-    }
+      return;
+    };
+    verifyUser();
   }, [twitchUserState]);
 
   return (
@@ -148,14 +178,13 @@ export const Logging_in = () => {
                 </ul>
               </div>
               <div className="loginTwitch">
-                <NavLink
+                <button
                   className="twitchButton logging_in_twitch_button"
-                  to="/dashboard"
                   id="button_logging_in"
+                  onClick={handleButtonClick}
                 >
-                  {isRegistered ? "Iniciar sesión" : "Registrarse"} como{" "}
-                  {twitchUserState.data.login}
-                </NavLink>
+                  {isRegistered ? 'Iniciar sesión' : 'Registrarse'} como{' '}
+                </button>
               </div>
             </div>
           </>

@@ -1,9 +1,12 @@
-import { Navigation } from "./routes/Navigation"
+import SteamAudioProvider from './context/SteamAudioContext';
+import { Navigation } from './routes/Navigation';
 
 const App = () => {
   return (
-    <Navigation />
+    <SteamAudioProvider>
+      <Navigation />
+    </SteamAudioProvider>
   );
-}
+};
 
 export default App;

@@ -5,6 +5,12 @@ export interface GetUserProps {
   };
 }
 
+export interface UserData {
+  email: string;
+  id: string;
+  login: string;
+}
+
 export interface UserTwitchData {
   broadcaster_type: string;
   created_at: Date;
