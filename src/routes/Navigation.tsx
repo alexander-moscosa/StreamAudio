@@ -1,23 +1,34 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Suspense } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Loading } from '../modules/loading/pages/Loading';
-
-const LazyLoggingIn = lazy( () => import(/* webpackChunkName: "LazyLoggingIn" */"../modules/logging-in/pages/Logging_in"));
-const LazyLogin = lazy( () => import(/* webpackChunkName: "LazyLogin" */"../modules/login/pages/Login"));
-const LazyHome = lazy( () => import(/* webpackChunkName: "LazyHome" */"../modules/home/pages/Home"));
-const LazyDashboard = lazy( () => import(/* webpackChunkName: "LazyDashboard" */"../modules/dashboard/pages/Dashboard"));
-
+import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
+import { Dashboard, Home, LoggingIn, Login } from './routes';
 
 export const Navigation = () => {
   return (
-    <Suspense fallback={ <Loading /> }> 
+    <Suspense fallback={<Loading />}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LazyHome />} />
-          <Route path="login" element={<LazyLogin />} />
-          <Route path="logging-in" element={<LazyLoggingIn /> } />
-          <Route path="/dashboard/*" element={<LazyDashboard /> } />
-          <Route path="*" element={<LazyHome />} />
+          <Route path="/" element={<Home />} />
+          <Route
+            path="login"
+            element={
+              <PublicRoute to="/dashboard">
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route path="logging-in" element={<LoggingIn />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <PrivateRoute to="/">
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </Suspense>
